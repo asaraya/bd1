@@ -1,4 +1,4 @@
-package tec.bd;
+package tec.bd.weather;
 
 import org.junit.Test;
 

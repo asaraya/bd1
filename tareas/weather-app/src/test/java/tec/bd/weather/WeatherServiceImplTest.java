@@ -12,9 +12,9 @@ public class WeatherServiceImplTest {
         WeatherServiceImpl weatherService = new WeatherServiceImpl();
 
         // Act
-        float actual = weatherService.getTemperature("Alajuela");
+        float actual = weatherService.getCityTemperature("Alajuela");
 
         // Assert
-        assertThat(actual).isEqualTo(22.0f);
+        assertThat(actual).isEqualTo(23.0f);
     }
 }
