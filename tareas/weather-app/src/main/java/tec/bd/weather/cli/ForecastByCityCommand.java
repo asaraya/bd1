@@ -1,25 +1,24 @@
-package tec.bd.weather;
+package tec.bd.weather.cli;
 
 import picocli.CommandLine;
-import tec.bd.weather.service.WeatherService;
-import tec.bd.weather.service.WeatherServiceImpl;
+import tec.bd.weather.ApplicationContext;
 
-@CommandLine.Command(name = "by-city", description = "Get weather for a particular city")
-public class WeatherByCityCommand implements Runnable{
+@CommandLine.Command(name = "by-city", aliases = { "bc" }, description = "Get weather for a particular city")
+public class ForecastByCityCommand implements Runnable {
 
     @CommandLine.Parameters(paramLabel = "<city name>", description = "The city name")
     private String cityName;
 
     @Override
     public void run() {
-
         System.out.println("By City: " + cityName);
 
         try {
-            WeatherService weatherService = new WeatherServiceImpl();
+            var appContext = new ApplicationContext();
+            var weatherService = appContext.getWeatherService();
             System.out.println(weatherService.getCityTemperature(cityName));
         } catch (Exception e) {
-            System.out.println(cityName + " is not supported");
+            System.err.println(cityName + " is not supported");
         }
-      }
+    }
 }
