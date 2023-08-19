@@ -1,6 +1,8 @@
 package tec.bd.weather;
 
 import picocli.CommandLine;
+import tec.bd.weather.service.WeatherService;
+import tec.bd.weather.service.WeatherServiceImpl;
 
 @CommandLine.Command(name = "by-city", description = "Get weather for a particular city")
 public class WeatherByCityCommand implements Runnable{
