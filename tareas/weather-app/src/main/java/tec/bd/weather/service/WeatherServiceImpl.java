@@ -58,8 +58,6 @@ public class WeatherServiceImpl implements WeatherService {
 
     @Override
     public void removeForecast(int forecastId) {
-        // TODO
-        // Solamente se puede borrar un forecast que exista
         var current = this.weatherRepository.findById(forecastId);
         if (current.isEmpty()) {
             throw new RuntimeException("Weather forecast ID doesn't exists in database");
