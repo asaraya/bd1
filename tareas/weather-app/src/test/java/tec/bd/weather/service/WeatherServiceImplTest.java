@@ -101,8 +101,24 @@ public class WeatherServiceImplTest {
 
     // TODO: Si se intenta ingresar un nuevo Forecast con miembros inválidos, el método no debe llamar al repositorio.
     @Test
-    public void GivenAInvalidForecast_WhenCreateNewForecast_ThenServiceException() {
+    public void GivenInvalidForecast_WhenUpdatingForecast_ThenNoRepositoryInteraction() {
+        // Arrange
+        var invalidForecast = new Forecast(5, null, "Limon", "33122", new Date(), 19.0f); // nombre de país inválido
+        var forecastRepository = mock(InMemoryForecastRepository.class);
 
+        var weatherService = new WeatherServiceImpl(forecastRepository);
+
+        // Act
+        try {
+            weatherService.updateForecast(invalidForecast);
+            fail("We shouldn't reach this line!");
+        } catch (Exception e) {
+
+        }
+
+        // Assert
+        verify(forecastRepository, never()).findById(5);
+        verify(forecastRepository, never()).update(any(Forecast.class));
     }
 
     // TODO: prueba unitaria para probar que una actualización es exitosa
@@ -141,11 +157,65 @@ public class WeatherServiceImplTest {
     }
 
     // TODO: prueba unitaria para probar que un Forecast que NO exista no pueda ser actualizado
+    @Test
+    public void GivenAInvalidForecast_WhenUpdatingForecast_ThenServiceException() {
+        var forecastRepository = mock(InMemoryForecastRepository.class);
 
-    // TODO: prueba unitaria para probar que un Forecast que tiene miembros inválidos, el método no debe llamar al repositorio.
+        given(forecastRepository.findById(10)).willReturn(Optional.empty()); // un id que no existe en la base
+
+        var weatherService = new WeatherServiceImpl(forecastRepository);
+
+
+        try {
+            var forecastToBeUpdated = new Forecast(10, "Costa Rica", "Limon", "33122", new Date(), 19.0f);
+            weatherService.updateForecast(forecastToBeUpdated);
+            fail("We shouldn't reach this line!");
+        } catch (Exception e) {
+
+        }
+
+
+        verify(forecastRepository, times(1)).findById(10);
+        verify(forecastRepository, never()).update(any(Forecast.class));
+    }
 
     // TODO: prueba unitaria para probar la eliminación exitosa de un Forecast
+    @Test
+    public void GivenAValidForecast_WhenRemovingForecast_ThenForecastIsRemoved() {
+        // Arrange
+        var forecastRepository = mock(InMemoryForecastRepository.class);
+        var forecast = new Forecast(5, "Costa Rica", "Limon", "33122", new Date(), 23.0f);
+
+        given(forecastRepository.findById(anyInt())).willReturn(Optional.of(forecast));
+
+        var weatherService = new WeatherServiceImpl(forecastRepository);
+
+
+        // Act
+        weatherService.removeForecast(5);
+
+        // Assert
+        verify(forecastRepository, times(1)).findById(5);
+        verify(forecastRepository, times(1)).delete(5);
+    }
 
     // TODO: prueba unitaria para probar que un Forecast ID que NO exista no pueda ser eliminado
+    @Test
+    public void GivenNonExistentForecastID_WhenRemovingForecast_ThenServiceException() {
+        var forecastRepository = mock(InMemoryForecastRepository.class);
 
+        given(forecastRepository.findById(10)).willReturn(Optional.empty());
+
+        var weatherService = new WeatherServiceImpl(forecastRepository);
+
+        try {
+            weatherService.removeForecast(10);
+            fail("We shouldn't reach this line!");
+        } catch (Exception e) {
+
+        }
+
+        verify(forecastRepository, times(1)).findById(10);
+        verify(forecastRepository, never()).delete(10);
+    }
 }
