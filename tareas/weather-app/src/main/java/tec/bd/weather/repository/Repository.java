@@ -4,6 +4,9 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Optional;
 
+// C++ Templates
+// Java, C# Generics
+
 public interface Repository<T, ID> {
 
     /**
@@ -14,7 +17,7 @@ public interface Repository<T, ID> {
     // "nullable"
     Optional<T> findById(ID id);
     List<T> findAll();
-    void save(T t);
+    T save(T t);
 
     void delete(ID id);
 

@@ -10,13 +10,17 @@ public class Forecast {
 
     private Date forecastDate;
 
+    private String countryName;
+
     private String cityName;
 
     private String zipCode;
 
-    private String countryName;
-
     public Forecast() { }
+
+    public Forecast(String countryName, String cityName, String zipCode, Date forecastDate, float temperature) {
+        this(0, countryName, cityName, zipCode, forecastDate, temperature);
+    }
 
     public Forecast(Integer id, String countryName, String cityName, String zipCode, Date forecastDate, float temperature) {
         this.id = id;
@@ -88,32 +92,30 @@ public class Forecast {
                 '}';
     }
 
-    public static void validate(Forecast weather) {
-        if (weather == null) {
-            throw new RuntimeException("No weather forecast was provided");
+    public static void validate(Forecast forecast) {
+        if (forecast == null) {
+            throw new RuntimeException("No forecast forecast was provided");
         }
-        if (weather.getId() == null) {
-            throw new RuntimeException("No weather forecast ID was provided");
+        if (forecast.getId() == null) {
+            throw new RuntimeException("No forecast forecast ID was provided");
         }
-        if (weather.getId() < 1) {
-            throw new RuntimeException("Weather forecast ID invalid");
-        }
-        if (weather.getCountryName().isBlank()) {
+
+        if (forecast.getCountryName().isBlank()) {
             throw new RuntimeException("Weather forecast country invalid");
         }
-        if (weather.getCityName().isBlank()) {
+        if (forecast.getCityName().isBlank()) {
             throw new RuntimeException("Weather forecast city invalid");
         }
-        if (weather.getZipCode().isBlank()) { // se podria utilizar un Regex
+        if (forecast.getZipCode().isBlank()) { // se podria utilizar un Regex
             throw new RuntimeException("Weather forecast zip code invalid");
         }
-        if (weather.getTemperature() < 0) {
+        if (forecast.getTemperature() < 0) {
             throw new RuntimeException("Weather forecast temperature invalid");
         }
-        if (weather.getForecastDate() == null) { // se podría validar que la fecha se encuentre dentro de un rango
+        if (forecast.getForecastDate() == null) { // se podría validar que la fecha se encuentre dentro de un rango
             throw new RuntimeException("Weather forecast date is invalid");
         }
-        if (weather.getForecastDate().after(new Date(System.currentTimeMillis()))) {
+        if (forecast.getForecastDate().after(new Date(System.currentTimeMillis()))) {
             throw new RuntimeException("Weather forecast date is in the future");
         }
     }

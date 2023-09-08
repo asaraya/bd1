@@ -9,8 +9,9 @@ import picocli.CommandLine;
                 ForecastByZipCodeCommand.class,
                 CreateForecastCommand.class,
                 UpdateForecastCommand.class,
+                RemoveForecastCommand.class,
                 CommandLine.HelpCommand.class,
-                DeleteForecastCommand.class
+                AllForecastsCommand.class
         },
         description = "Weather App")
 public class MainCommand implements Runnable {
